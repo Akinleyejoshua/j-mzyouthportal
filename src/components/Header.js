@@ -92,7 +92,7 @@ const Header = () => {
                                 }, 1);
                             }}><i className="far fa-chart-bar"></i> Dashboard</button>}
                             {document.location.href === `${http}//${domain}/dashboard` && <button><i className="fa fa-file-alt"></i> Invoice</button>}
-                            {isAdmin === true && <button onClick={() => [
+                            {<button onClick={() => [
                                 setTimeout(() => {
                                     history.push("/publisher");
                                 }, 1)

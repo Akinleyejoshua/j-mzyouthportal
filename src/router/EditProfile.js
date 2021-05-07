@@ -16,6 +16,7 @@ const EditProfile = () => {
     const loading = useSelector(state => state.profile.loading);
     const img = useSelector(state => state.profile.profilePic);
     const mysettings = useSelector(state => state.mysettings);
+    const username = useSelector(state => state.profile.name);
 
     const [state, setState] = useState({
         pic: img,
@@ -29,7 +30,8 @@ const EditProfile = () => {
         discription: "",
         number: "",
         facebookId: "",
-        alert: false
+        alert: false,
+        emailReset: ""
     });
 
     return(
@@ -128,11 +130,22 @@ const EditProfile = () => {
                     </div>
                     <div id="input">
                         <i className="fa fa-user"></i>
-                        <input type="text" placeholder="Username" onChange={(event) => {
-                            setState({
-                                ...state,
-                                username: event.target.value
-                            })
+                        <input type="text" 
+                            disabled={username === "" ? false : true } 
+                            placeholder="Username" 
+                            onChange={(event) => {
+                            if (username === ""){
+                                dispatch({
+                                    type: "toggle_alert",
+                                    alert: true,
+                                    alertContent: "You can only update your username once, This Policy may change in future updates"
+                                });
+                            } else {
+                                setState({
+                                    ...state,
+                                    username: event.target.value
+                                })
+                            }                
                         }}/>
                     </div>
                     <div id="input">
@@ -167,7 +180,7 @@ const EditProfile = () => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
-                                    alertContent: `Username:${state.username} Updated`
+                                    alertContent: `Username: ${state.username} Updated`
                                 });
                                 dispatch({
                                     type: "update_username",
@@ -255,7 +268,7 @@ const EditProfile = () => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
-                                    alertContent: `Mobile Number:${state.number} Updated`
+                                    alertContent: `Mobile Number: ${state.number} Updated`
                                 });
                             })
                         } else {
@@ -276,18 +289,18 @@ const EditProfile = () => {
                         <input type="email" placeholder="Email" onChange={(event) => {
                             setState({
                                 ...state,
-                                email: event.target.value
+                                emailReset: event.target.value
                             })
                         }}/>
                     </div>
                     <button onClick={(event) => {
                         event.preventDefault();
-                        if (state.email !== ""){
+                        if (state.emailReset !== ""){
                             setState({
                                 ...state,
                                 loading: true,
                             });
-                            Firebase().auth.sendPasswordResetEmail(state.email).then(() => {
+                            Firebase().auth.sendPasswordResetEmail(state.emailReset).then(() => {
                                 setState({
                                     ...state,
                                     loading: false,
@@ -295,7 +308,7 @@ const EditProfile = () => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
-                                    alertContent: `Password Reset Email Sent to:${state.email}`
+                                    alertContent: `Password Reset Email Sent to: ${state.emailReset}`
                                 });
                             }).catch(() => {
                                 setState({
