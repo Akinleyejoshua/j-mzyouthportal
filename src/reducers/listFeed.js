@@ -14,6 +14,7 @@ const initialState = {
     likedBy: [],
     loading: true,
     commentbar: false,
+    commentbarid: ""
 }
 
 const ListFeedReducer = (state = initialState, action) => {
@@ -70,6 +71,7 @@ const ListFeedReducer = (state = initialState, action) => {
                 commentsenderuid: [],
                 commentimg: [],
                 comments: [],
+                commentbarid: ""
             }
         case "clear_comment_metrics":
             return  {
@@ -85,6 +87,7 @@ const ListFeedReducer = (state = initialState, action) => {
             return {
                 ...state,
                 commentbar: action.value,
+                commentbarid: action.id
             }
         default:
             return state;

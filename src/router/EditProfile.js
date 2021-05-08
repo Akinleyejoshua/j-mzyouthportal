@@ -76,7 +76,8 @@ const EditProfile = () => {
                                     Firebase().storage.ref(`images/${uid}/profile-pic.jpg`).put(state.blob).then(() => {
                                         Firebase().storage.ref(`images/${uid}/profile-pic.jpg`).getDownloadURL().then(url => {
                                             Firebase().db.ref("users/" + uid).update({
-                                                profilePic: url
+                                                profilePic: url,
+                                                // profilePic: `https://firebasestorage.googleapis.com/v0/b/mount--zion-youth-portal.appspot.com/o/images%2${uid}%2Fprofile-pic.jpg`
                                             }).then(() => {
                                                 setState({
                                                     ...state,
@@ -106,7 +107,7 @@ const EditProfile = () => {
                                             });
                                         };
                                         
-                                        if (state.imgSent === false || state.imgSent === null) {
+                                        if (state.imgSent === false) {
                                             dispatch({
                                                 type: "toggle_alert",
                                                 alert: true,

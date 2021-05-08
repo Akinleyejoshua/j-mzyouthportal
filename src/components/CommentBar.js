@@ -71,14 +71,14 @@ const CommentBar = (props) => {
                         value: ""
                     })
                     event.target.previousElementSibling.value = ""
-                    Firebase().db.ref(`feeds/${props.id}/comments`).push({
+                    Firebase().db.ref(`feeds/${props.data.commentbarid}/comments`).push({
                         sender: profile.name,
                         img: profile.profilePic,
                         content: state.value,
                         uid: profile.uid
                     }).then(() => {
                         props.onReload();
-                        Firebase().db.ref(`feeds/${props.id}/comments`).limitToLast(1).once("value").then(snapshot => {
+                        Firebase().db.ref(`feeds/${props.data.commentbarid}/comments`).limitToLast(1).once("value").then(snapshot => {
                             snapshot.forEach(items => {
                                 dispatch({
                                     type: "get_comments_uid",

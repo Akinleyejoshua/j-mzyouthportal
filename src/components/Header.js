@@ -92,11 +92,11 @@ const Header = () => {
                                 }, 1);
                             }}><i className="far fa-chart-bar"></i> Dashboard</button>}
                             {document.location.href === `${http}//${domain}/dashboard` && <button><i className="fa fa-file-alt"></i> Invoice</button>}
-                            {<button onClick={() => [
+                            {<button onClick={() => {
                                 setTimeout(() => {
                                     history.push("/publisher");
                                 }, 1)
-                            ]}><i className="fa fa-file"></i> Publisher</button>}
+                            }}><i className="fa fa-file"></i> Publisher</button>}
                             <button onClick={() => {
                                 setTimeout(() => {
                                     history.push("/my-settings");

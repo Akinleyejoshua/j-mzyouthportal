@@ -218,12 +218,13 @@ const ListFeed = () => {
                         dispatch({
                             type: "toggle_comment_bar",
                             value: true,
+                            id: items
                         })
                     })      
                 }}>{listfeed.commentlength[i]}</button>
                 <button className="fa fa-share-alt"></button>
             </div>
-            <CommentBar data={listfeed} id={items} onReload={() => {
+            <CommentBar data={listfeed} onReload={() => {
                 loadCommentMetrics();
             }} onClick={() => {
                 dispatch({type: "clear_comments"})
