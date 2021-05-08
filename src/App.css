@@ -430,6 +430,9 @@ header .navbar {
     display: flex;
     align-self: center;
     padding: .5rem;
+    border-right: 1px solid rgba(65, 105, 225, 0.25);
+    padding: 0 .5rem 0 .25rem;
+    margin: .5rem;
 }
 
 #input input {
