@@ -21,7 +21,9 @@ const Connect  = () => {
         // dispatch({
         //     type: "clear_connect_user"
         // })
-        Firebase().db.ref("users/").once("value").then(snapshot => {
+        Firebase().db.ref("users/")
+        .once("value")
+        .then(snapshot => {
             snapshot.forEach(items => {
                dispatch({
                    type: "get_connect_user",
@@ -32,7 +34,8 @@ const Connect  = () => {
                    phoneNumber: items.val().phoneNumber,
                }) 
             })
-        }).then(() => {
+        })
+        .then(() => {
             dispatch({
                 type: "toggle_connect_loader",
                 value: false
@@ -60,7 +63,9 @@ const Connect  = () => {
                             type: "clear_user_profile"
                         })
                         let id = connect.uid[i]
-                        Firebase().db.ref("users/" + id).once("value").then(snapshot => {
+                        Firebase().db.ref("users/" + id)
+                        .once("value")
+                        .then(snapshot => {
                             dispatch({
                                 type: "get_user_profile",
                                 img: snapshot.val().profilePic,
@@ -71,7 +76,8 @@ const Connect  = () => {
                                 email: snapshot.val().email,
                                 uid: snapshot.key
                             })
-                        }).then(() => {
+                        })
+                        .then(() => {
                             setTimeout(() => {
                                 dispatch({
                                     type: "toggle_connect_loader",

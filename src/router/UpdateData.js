@@ -47,7 +47,9 @@ const UpdateData = () => {
         event.preventDefault();
 
         const updateToFirebase = (data) => {
-            Firebase().db.ref("users/" + uid).update(data).then(() => {
+            Firebase().db.ref("users/" + uid)
+            .update(data)
+            .then(() => {
                 setState({
                     ...state,
                     loading: false,

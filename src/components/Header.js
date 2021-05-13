@@ -85,7 +85,7 @@ const Header = () => {
                                 setTimeout(() => {
                                     history.push("/connect");
                                 }, 1);
-                            }}><i className="far fa-comment"></i> Chat</button>
+                            }}><i className="far fa-comments"></i> Chat</button>
                             {(isAdmin === true && document.location.href !== `${http}//${domain}/dashboard`) && <button onClick={() => {
                                 setTimeout(() => {
                                     history.push("/dashboard");

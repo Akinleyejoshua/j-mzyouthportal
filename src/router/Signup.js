@@ -75,7 +75,8 @@ const Signup = () => {
                 Firebase().auth.createUserWithEmailAndPassword(state.email, state.password).then(()=>{
                     Firebase().auth.onAuthStateChanged((user) =>{
                         if (user){
-                            Firebase().db.ref("users/" + user.uid).set({
+                            Firebase().db.ref("users/" + user.uid)
+                            .set({
                                 username: state.username,
                                 isAdmin: false,
                                 phoneNumber: "",
@@ -83,7 +84,8 @@ const Signup = () => {
                                 email: state.email,
                                 profilePic: "",
                                 executivePosition: ""
-                            }).then(() => {
+                            })
+                            .then(() => {
                                 setErr({
                                     ...state,
                                     error: false,

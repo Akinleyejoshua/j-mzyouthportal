@@ -28,7 +28,9 @@ const Dashboard = () => {
             value: true,
         })
         dispatch({ type: "clear_dashboard" })
-        Firebase().db.ref("users/").once("value").then(snapshot => {
+        Firebase().db.ref("users/")
+        .once("value")
+        .then(snapshot => {
             snapshot.forEach(items => {
                 church === items.val().churchAssembly && dispatch({
                     type: "get_users",
@@ -37,7 +39,6 @@ const Dashboard = () => {
                     img: items.val().profilePic,
                     uid: items.key,
                 })
-
                 church === "All" && dispatch({
                     type: "get_users",
                     username: items.val().username,
@@ -72,7 +73,8 @@ const Dashboard = () => {
                             type: "clear_user_data"
                         });
                         let id  = event.target.id
-                        Firebase().db.ref("users/"+id).once("value").then(snapshot => {
+                        Firebase().db.ref("users/"+id).once("value")
+                        .then(snapshot => {
                             dispatch({
                                 type: "get_user_data",
                                 firstname: snapshot.val().firstname,
@@ -96,7 +98,8 @@ const Dashboard = () => {
                                 mothername: snapshot.val().mothername,
                                 noOfSiblings: snapshot.val().noOfSiblings,
                             })       
-                        }).then(() => {
+                        })
+                        .then(() => {
                             dispatch({
                                 type: "dashboard_loading",
                                 value: false,
@@ -112,10 +115,14 @@ const Dashboard = () => {
                 </div>
             </div>
             {isAdmin[i] === true ? <button onClick={() => {
-                Firebase().db.ref("users/"+userId[i]).update({
+                Firebase().db.ref("users/"+userId[i])
+                .update({
                     isAdmin: false,
-                }).then(() => {
-                    Firebase().db.ref("users/").once("value").then(snapshot => {
+                })
+                .then(() => {
+                    Firebase().db.ref("users/")
+                    .once("value")
+                    .then(snapshot => {
                         let allIsAdmin = [];
                         snapshot.forEach(items => {
                             allIsAdmin.push(items.val().isAdmin)
@@ -128,10 +135,14 @@ const Dashboard = () => {
                     })
                 });
             }}><i className="fa fa-minus"></i> <i className="fa fa-user-cog"></i></button> : <button onClick={() => {
-                Firebase().db.ref("users/"+userId[i]).update({
+                Firebase().db.ref("users/"+userId[i])
+                .update({
                     isAdmin: true,
-                }).then(() => {
-                    Firebase().db.ref("users/").once("value").then(snapshot => {
+                })
+                .then(() => {
+                    Firebase().db.ref("users/")
+                    .once("value")
+                    .then(snapshot => {
                         let allIsAdmin = [];
                         snapshot.forEach(items => {
                             allIsAdmin.push(items.val().isAdmin)

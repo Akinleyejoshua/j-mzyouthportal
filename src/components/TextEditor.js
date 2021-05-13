@@ -1,16 +1,28 @@
+import {useSelector, useDispatch} from "react-redux";
 import {useState} from "react";
+import Firebase from "../db/Firebase";
 import ReactHtmlParser from "react-html-parser";
+import Alert from "../components/Alert";
+import Loader from "../components/Loader";
+
 
 const TextEditor = (props) => {
 
+    const dispatch = useDispatch();
+
     const [state, setState] = useState({
         value: "",
-        
-        
+        imgBlob: "",
+        loading: false
     })
+
+    const profile = useSelector(state => state.profile);
+    const mysettings = useSelector(state => state.mysettings);
 
     return (
         <div id="text-editor">
+            {state.loading === true && <Loader/>}
+            {mysettings.alert === true && <Alert content="loading Picture, Be Patient"/>}
             <div className="toolbar">
                 <button onClick={() => {
                     setState(prevState => ({
@@ -43,7 +55,46 @@ const TextEditor = (props) => {
                     setState(prevState => ({
                         value: prevState.value + `<a href=${link} target='_blank'>${name}</a>`,
                     }))
-                }}><b className="fa fa-link"></b></button>
+                }}><i className="fa fa-link"></i></button>
+                <button className="fa fa-image"
+                    style={{
+                        position: "relative"
+                    }}>
+                    <input type="file"
+                        className="hidden"
+                        onChange={(event) => {
+                            setState({
+                                ...state,
+                                imgBlob: event.target.files[0],
+                                loading: true
+                            })
+                            dispatch({
+                                type: "toggle_alert",
+                                alert: true,
+                            });
+                            let random = Math.floor( Math.random() * 1000000000000);
+                            Firebase().storage.ref(`images/${profile.uid}/feeds/${random}.jpg`)
+                            .put(event.target.files[0])
+                            .then(() => {
+                                Firebase().storage.ref(`images/${profile.uid}/feeds/${random}.jpg`)
+                                .getDownloadURL()
+                                .then(url => {
+                                    dispatch({
+                                        type: "toggle_alert",
+                                        alert: false,
+                                    });
+                                    setState({
+                                        ...state,
+                                        loading: false
+                                    })
+                                    setState(prevState => ({
+                                        value: prevState.value + `<img src='${url}' alt=''/>`,
+                                    }))
+                                })
+                            })
+                        }
+                    }/>   
+                </button>
             </div>
             <h5>Content</h5>
             <textarea placeholder="*Help tips*
@@ -63,8 +114,15 @@ const TextEditor = (props) => {
             }} className="editor"/>
             <h5>Preview</h5>
             <div className="editor">{ReactHtmlParser(state.value)}</div>
-            {state.value !== "" && <button onClick={() => {
-                props.sendData(state.value);
+            {state.value !== "" && <button
+                style={{
+                    background: "royalblue",
+                    color: "white",
+                    borderRadius: ".2rem",
+                    boxShadow: "0 0 5px gray",
+                }}
+                onClick={() => {
+                    props.sendData(state.value);
             }}>Publish</button>}
         </div>
     )

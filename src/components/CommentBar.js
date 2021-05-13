@@ -1,7 +1,9 @@
 import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import Firebase from "../db/Firebase";
-import {useHistory} from "react-router"
+import {useHistory} from "react-router";
+import ReactHtmlParser from "react-html-parser";
+
 
 const CommentBar = (props) => {
     const [state, setState] = useState({
@@ -26,7 +28,9 @@ const CommentBar = (props) => {
                             type: "clear_user_profile"
                         })
                         let id = props.data.commentsenderuid[i]
-                        Firebase().db.ref("users/" + id).once("value").then(snapshot => {
+                        Firebase().db.ref("users/" + id)
+                        .once("value")
+                        .then(snapshot => {
                             dispatch({
                                 type: "get_user_profile",
                                 img: snapshot.val().profilePic,
@@ -37,14 +41,15 @@ const CommentBar = (props) => {
                                 email: snapshot.val().email,
                                 uid: snapshot.key
                             })
-                        }).then(() => {
+                        })
+                        .then(() => {
                             setTimeout(() => {
                                 history.push("/view-profile");
                             }, 1);
                         })
       
                     }}>{props.data.commentsender[i]}</h4>
-                <p>{props.data.comments[i]}</p>
+                <p>{ReactHtmlParser(props.data.comments[i])}</p>
             </div>
         </div>
     )
@@ -76,9 +81,13 @@ const CommentBar = (props) => {
                         img: profile.profilePic,
                         content: state.value,
                         uid: profile.uid
-                    }).then(() => {
+                    })
+                    .then(() => {
                         props.onReload();
-                        Firebase().db.ref(`feeds/${props.data.commentbarid}/comments`).limitToLast(1).once("value").then(snapshot => {
+                        Firebase().db.ref(`feeds/${props.data.commentbarid}/comments`)
+                        .limitToLast(1)
+                        .once("value")
+                        .then(snapshot => {
                             snapshot.forEach(items => {
                                 dispatch({
                                     type: "get_comments_uid",

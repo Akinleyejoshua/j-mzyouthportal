@@ -50,13 +50,17 @@ const EditProfile = () => {
                     </div>
                     <div id="input">
                         <i className="fa fa-image"></i>
-                        <input disabled={img === "" ? false : true} type="file" onChange={(event) => {
-                            setState({
-                                ...state,
-                                pic: URL.createObjectURL(event.target.files[0]),
-                                blob: event.target.files[0],
-                            })
-                        }}/>
+                        <input
+                            disabled={img === "" ? false : true} 
+                            type="file" 
+                            onChange={(event) => {
+                                setState({
+                                    ...state,
+                                    pic: URL.createObjectURL(event.target.files[0]),
+                                    blob: event.target.files[0],
+                                })
+                            }
+                        }/>
                     </div>
                     <button onClick={(event) => {
                         event.preventDefault();
@@ -73,12 +77,18 @@ const EditProfile = () => {
                                     loading: true,
                                 });
                                 let uploadTimer = setInterval(() => {
-                                    Firebase().storage.ref(`images/${uid}/profile-pic.jpg`).put(state.blob).then(() => {
-                                        Firebase().storage.ref(`images/${uid}/profile-pic.jpg`).getDownloadURL().then(url => {
-                                            Firebase().db.ref("users/" + uid).update({
+                                    Firebase().storage.ref(`images/${uid}/profile-pic.jpg`)
+                                    .put(state.blob)
+                                    .then(() => {
+                                        Firebase().storage.ref(`images/${uid}/profile-pic.jpg`)
+                                        .getDownloadURL()
+                                        .then(url => {
+                                            Firebase().db.ref("users/" + uid)
+                                            .update({
                                                 profilePic: url,
                                                 // profilePic: `https://firebasestorage.googleapis.com/v0/b/mount--zion-youth-portal.appspot.com/o/images%2${uid}%2Fprofile-pic.jpg`
-                                            }).then(() => {
+                                            })
+                                            .then(() => {
                                                 setState({
                                                     ...state,
                                                     loading: false,
@@ -133,21 +143,23 @@ const EditProfile = () => {
                         <i className="fa fa-user"></i>
                         <input type="text" 
                             disabled={username === "" ? false : true } 
-                            placeholder="Username" 
+                            placeholder="Username"
+                            onMouseOver={() => {
+                                if (username !== ""){
+                                    dispatch({
+                                        type: "toggle_alert",
+                                        alert: true,
+                                        alertContent: "You can only update your username once, This Policy may change in future updates"
+                                    });
+                                }       
+                            }}
                             onChange={(event) => {
-                            if (username === ""){
-                                dispatch({
-                                    type: "toggle_alert",
-                                    alert: true,
-                                    alertContent: "You can only update your username once, This Policy may change in future updates"
-                                });
-                            } else {
                                 setState({
                                     ...state,
                                     username: event.target.value
-                                })
-                            }                
-                        }}/>
+                                })           
+                            }}
+                        />
                     </div>
                     <div id="input">
                         <i className="fa fa-user"></i>
@@ -171,9 +183,11 @@ const EditProfile = () => {
                                 ...state,
                                 loading: true,
                             });
-                            Firebase().db.ref("users/" + uid).update({
+                            Firebase().db.ref("users/" + uid)
+                            .update({
                                 username: state.username
-                            }).then(() => {
+                            })
+                            .then(() => {
                                 setState({
                                     ...state,
                                     loading: false,
@@ -195,9 +209,11 @@ const EditProfile = () => {
                                 ...state,
                                 loading: true,
                             });
-                            Firebase().db.ref("users/" + uid).update({
+                            Firebase().db.ref("users/" + uid)
+                            .update({
                                 executivePosition: state.execPosition
-                            }).then(() => {
+                            })
+                            .then(() => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
@@ -219,9 +235,11 @@ const EditProfile = () => {
                                 ...state,
                                 loading: true,
                             });
-                            Firebase().db.ref("users/" + uid).update({
+                            Firebase().db.ref("users/" + uid)
+                            .update({
                                 discription: state.discription
-                            }).then(() => {
+                            })
+                            .then(() => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
@@ -259,9 +277,11 @@ const EditProfile = () => {
                                 ...state,
                                 loading: true,
                             });
-                            Firebase().db.ref("users/" + uid).update({
+                            Firebase().db.ref("users/" + uid)
+                            .update({
                                 phoneNumber: state.number
-                            }).then(() => {
+                            })
+                            .then(() => {
                                 setState({
                                     ...state,
                                     loading: false,
@@ -311,7 +331,8 @@ const EditProfile = () => {
                                     alert: true,
                                     alertContent: `Password Reset Email Sent to: ${state.emailReset}`
                                 });
-                            }).catch(() => {
+                            })
+                            .catch((error) => {
                                 setState({
                                     ...state,
                                     loading: false,
@@ -319,8 +340,7 @@ const EditProfile = () => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
-                                    alertContent: "Network Error: Try Again"
-                                });
+                                    alertContent: "Network Error: Try Again " + error.message                                });
                             })
                         } else {
                             dispatch({

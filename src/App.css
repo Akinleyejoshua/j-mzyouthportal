@@ -320,7 +320,7 @@ header .navbar {
     margin-bottom: .5rem;
     display: flex;
     justify-content: flex-start;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .navbar #actions button i {
@@ -864,11 +864,14 @@ form textarea {
     display: flex;
     border-radius: .5rem;
     margin: .5rem 0;
+    border: 1px solid rgba(65, 105, 225, 0.25);
+    box-shadow: 0 0 10px rgba(65, 105, 225, 0.1);
 }
 
 #text-editor .toolbar button {
     color: royalblue;
     border-radius: 0;
+    background: white;
 }
 
 #text-editor .toolbar *.green {
@@ -904,6 +907,11 @@ textarea.editor {
 
 .editor a {
     text-decoration: underline;
+}
+
+.editor img{
+    height: 15rem;
+    width: 100%;
 }
 
 .options {
@@ -1010,6 +1018,50 @@ textarea.editor {
 
 .loader .circle:nth-child(5) {
     animation-delay: 960ms;
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(225deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+
+    7% {
+        transform: rotate(345deg);
+        animation-timing-function: linear;
+    }
+
+    30% {
+        transform: rotate(455deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    39% {
+        transform: rotate(690deg);
+        animation-timing-function: linear;
+    }
+
+    70% {
+        transform: rotate(815deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+
+    75% {
+        transform: rotate(945deg);
+        animation-timing-function: ease-out;
+    }
+
+    76% {
+        transform: rotate(945deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(945deg);
+        opacity: 0;
+    }
 }
 
 .dark-mode header {
@@ -1185,6 +1237,17 @@ textarea.editor {
     font-size: 15px;
 }
 
+#list-feed .bar-content img{
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(65, 105, 225, 0.25);
+    box-shadow: 0 0 10px rgba(65, 105, 225, 0.1);
+}
+
+#list-feed .bar-content a{
+    text-decoration: underline;
+}
+
 .bar-top img {
     height: 2.5rem;
     width: 2.5rem;
@@ -1221,6 +1284,7 @@ textarea.editor {
     border: none;
     color: royalblue;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .bar-actions button::before{
@@ -1357,11 +1421,12 @@ textarea.editor {
     position: fixed;
     height: 100%;
     width: 100%;
-    z-index: 50;
+    z-index: 5000;
     display: flex;
     place-content: center;
     background: rgba(0, 0, 0, 0.5);
     left: 0;
+    top: 0;
 }
 
 .alert * {
@@ -1393,48 +1458,15 @@ textarea.editor {
     width: 2rem;
 }
 
-@keyframes orbit {
-    0% {
-        transform: rotate(225deg);
-        opacity: 1;
-        animation-timing-function: ease-out;
-    }
-
-    7% {
-        transform: rotate(345deg);
-        animation-timing-function: linear;
-    }
-
-    30% {
-        transform: rotate(455deg);
-        animation-timing-function: ease-in-out;
-    }
-
-    39% {
-        transform: rotate(690deg);
-        animation-timing-function: linear;
-    }
-
-    70% {
-        transform: rotate(815deg);
-        opacity: 1;
-        animation-timing-function: ease-out;
-    }
-
-    75% {
-        transform: rotate(945deg);
-        animation-timing-function: ease-out;
-    }
-
-    76% {
-        transform: rotate(945deg);
-        opacity: 0;
-    }
-
-    100% {
-        transform: rotate(945deg);
-        opacity: 0;
-    }
+.hidden{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0
 }
 
 @media screen and (min-width: 860px) {

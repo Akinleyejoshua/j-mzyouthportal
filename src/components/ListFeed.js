@@ -22,24 +22,21 @@ const ListFeed = () => {
         let likedBy = [];
 
         dispatch({type: "clear_like_metrics"})
-        Firebase().db.ref("feeds/").once("value").then(snapshot => {
+        Firebase().db.ref("feeds/")
+        .once("value")
+        .then(snapshot => {
             snapshot.forEach(items => {
                 let child = items.val().metrics;
-
-                if (child === undefined) {
-                    dispatch({
-                        type: "get_like_metrics",
-                        likes: 0,
-                        likedBy: likedBy,
-                    })
-                } else {
-                    Firebase().db.ref("feeds/" + items.key + "/metrics/likes").once("value").then(snapshot => {
+                console.log(child)
+                Firebase().db.ref("feeds/" + items.key + "/metrics/likes")
+                    .once("value")
+                    .then(snapshot => {
                         snapshot.forEach(items => {
                             likes.push(items.key);
                             likedBy.push(items.key);
-                        })     
-                        
-                    }).then(() => {
+                        })  
+                    })
+                    .then(() => {
                         dispatch({
                             type: "get_like_metrics",
                             likes: likes.length,
@@ -48,7 +45,6 @@ const ListFeed = () => {
                         likes = [];
                         likedBy = [];                         
                     })
-                }
                    
             })
         })
@@ -58,16 +54,14 @@ const ListFeed = () => {
         let comments = [];
 
         dispatch({type: "clear_comment_metrics"})
-        Firebase().db.ref("feeds/").once("value").then(snapshot => {
+        Firebase().db.ref("feeds/")
+        .once("value")
+        .then(snapshot => {
             snapshot.forEach(items => {
                 let child = items.val().comments;
-                if (child === undefined) {
-                    dispatch({
-                        type: "get_comment_metrics",
-                        commentlenght: 0,
-                    })
-                } else {
-                    Firebase().db.ref("feeds/" + items.key + "/comments").once("value").then(snapshot => {
+                Firebase().db.ref("feeds/" + items.key + "/comments")
+                    .once("value")
+                    .then(snapshot => {
                         snapshot.forEach(items => {
                             comments.push(items.key);
                             dispatch({
@@ -75,21 +69,23 @@ const ListFeed = () => {
                                 commentuid: items.key
                             })
                         })
-                    }).then(() => {
+                    })
+                    .then(() => {
                         dispatch({
                             type: "get_comment_metrics",
                             commentlength: comments.length,
                         })
                         comments = [];
                     })
-                }
                    
             })
         })
     }
 
     const loadFeeds = () => {
-        Firebase().db.ref("feeds/").once("value").then(snapshot => {
+        Firebase().db.ref("feeds/")
+        .once("value")
+        .then(snapshot => {
             snapshot.forEach(items => {
                 dispatch({
                     type: "get_feeds",
@@ -100,10 +96,12 @@ const ListFeed = () => {
                     uid: items.key
                 })
             })
-        }).then(() => {
+        })
+        .then(() => {
             loadLikeMetrics();
             loadCommentMetrics();
-        }).then(() => {
+        })
+        .then(() => {
             dispatch({
                 type: "toggle_loader",
                 value: false
@@ -133,7 +131,9 @@ const ListFeed = () => {
                         type: "clear_user_profile"
                     })
                     let id = listfeed.userID[i]
-                    Firebase().db.ref("users/" + id).once("value").then(snapshot => {
+                    Firebase().db.ref("users/" + id)
+                    .once("value")
+                    .then(snapshot => {
                         dispatch({
                             type: "get_user_profile",
                             img: snapshot.val().profilePic,
@@ -144,7 +144,8 @@ const ListFeed = () => {
                             email: snapshot.val().email,
                             uid: snapshot.key
                         })
-                    }).then(() => {
+                    })
+                    .then(() => {
                         setTimeout(() => {
                             history.push("/view-profile");
                         }, 1);
@@ -156,7 +157,9 @@ const ListFeed = () => {
                 <div className="dropdown fa fa-ellipsis-h">
                     <div className="panel">
                         {listfeed.userID[i] === profile.uid && <button onClick={(event) => {
-                            Firebase().db.ref("feeds/"+ items).remove().then(() => {
+                            Firebase().db.ref("feeds/"+ items)
+                            .remove()
+                            .then(() => {
                                 event.target.parentElement.parentElement.parentElement.parentElement.style.display = "none";
                             })
                         }}><i className="far fa-trash-alt"></i> Delete</button>}
@@ -200,7 +203,9 @@ const ListFeed = () => {
                     let id = listfeed.uid[i];
                     dispatch({type: "clear_comments"})
                     dispatch({type: "clear_comments_uid"})
-                    Firebase().db.ref(`feeds/${id}/comments`).once("value").then(snapshot => {
+                    Firebase().db.ref(`feeds/${id}/comments`)
+                    .once("value")
+                    .then(snapshot => {
                         snapshot.forEach(items => {
                             dispatch({
                                 type: "get_comments_uid",
@@ -214,7 +219,8 @@ const ListFeed = () => {
                                 commentimg: items.val().img
                             })
                         })
-                    }).then(() =>{
+                    })
+                    .then(() =>{
                         dispatch({
                             type: "toggle_comment_bar",
                             value: true,

@@ -19,7 +19,10 @@ const Publisher = () => {
     })
 
     const loadFeeds = () => {
-        Firebase().db.ref("feeds/").limitToLast(1).once("value").then(snapshot => { 
+        Firebase().db.ref("feeds/")
+        .limitToLast(1)
+        .once("value")
+        .then(snapshot => { 
             snapshot.forEach(items => {
                 dispatch({
                     type: "get_feeds",
@@ -40,7 +43,8 @@ const Publisher = () => {
             img: profile.profilePic,
             userID: profile.uid,
             username: profile.name,
-        }).then(() => {
+        })
+        .then(() => {
             loadFeeds();
             dispatch({
                 type: "get_like_metrics",
@@ -51,7 +55,8 @@ const Publisher = () => {
                 type: "get_comment_metrics",
                 commentlenght: 0,
             })
-        }).then(() => {
+        })
+        .then(() => {
             setState({
                 ...state,
                 loading: false
