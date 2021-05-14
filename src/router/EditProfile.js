@@ -340,7 +340,8 @@ const EditProfile = () => {
                                 dispatch({
                                     type: "toggle_alert",
                                     alert: true,
-                                    alertContent: "Network Error: Try Again " + error.message                                });
+                                    alertContent: error.message                                
+                                });
                             })
                         } else {
                             dispatch({
