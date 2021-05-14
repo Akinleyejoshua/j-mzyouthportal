@@ -18,6 +18,8 @@ const Publisher = () => {
         loading: false,
     })
 
+    let medias = [];
+
     const loadFeeds = () => {
         Firebase().db.ref("feeds/")
         .limitToLast(1)
@@ -43,6 +45,7 @@ const Publisher = () => {
             img: profile.profilePic,
             userID: profile.uid,
             username: profile.name,
+            medias: medias
         })
         .then(() => {
             loadFeeds();
@@ -79,6 +82,8 @@ const Publisher = () => {
                         sendData(value);
                         clearInterval(timer, 9000);
                     }, 10000)
+                }} getMedias={(value) => {
+                    medias.push(value)
                 }}/>
             </main>
             <BottomNav/>

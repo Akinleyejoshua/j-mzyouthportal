@@ -13,7 +13,7 @@ const TextEditor = (props) => {
     const [state, setState] = useState({
         value: "",
         imgBlob: "",
-        loading: false
+        loading: false,
     })
 
     const profile = useSelector(state => state.profile);
@@ -66,13 +66,15 @@ const TextEditor = (props) => {
                             setState({
                                 ...state,
                                 imgBlob: event.target.files[0],
-                                loading: true
+                                loading: true,
                             })
+                            let random = Math.floor( Math.random() * 1000000000000)
+                            props.getMedias(random);
                             dispatch({
                                 type: "toggle_alert",
                                 alert: true,
                             });
-                            let random = Math.floor( Math.random() * 1000000000000);
+                            
                             Firebase().storage.ref(`images/${profile.uid}/feeds/${random}.jpg`)
                             .put(event.target.files[0])
                             .then(() => {

@@ -27,7 +27,7 @@ const Dashboard = () => {
             type: "dashboard_loading",
             value: true,
         })
-        dispatch({ type: "clear_dashboard" })
+        // dispatch({ type: "clear_dashboard" })
         Firebase().db.ref("users/")
         .once("value")
         .then(snapshot => {
@@ -56,7 +56,7 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-        loadDashboard("All");
+        loading === true && loadDashboard("All");
     }, []);
 
     const listUsers = users.map((items, i) => 

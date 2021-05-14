@@ -39,7 +39,12 @@ const MyRouter = () => {
                 uid: user.uid
             });
             
-            if (document.location.href === `${http}//${domain}/` || document.location.href === `${http}//${domain}` || document.location.href === locations[3] || document.location.href === locations[4] || document.location.href === locations[7]){
+            if (document.location.href === `${http}//${domain}/`
+                || document.location.href === `${http}//${domain}`
+                || document.location.href === locations[3]
+                || document.location.href === locations[4]
+                || document.location.href === locations[7]
+                ){
                 history.push("/home");
             }
         } else {

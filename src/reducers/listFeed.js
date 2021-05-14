@@ -29,7 +29,6 @@ const ListFeedReducer = (state = initialState, action) => {
                 img: [...state.img, action.img],
             }
         case "get_like_metrics":
-            console.log(action.likes)
             return {
                 ...state,
                 likes: [...state.likes, action.likes],
@@ -42,7 +41,6 @@ const ListFeedReducer = (state = initialState, action) => {
                 likedBy: []
             }
         case "get_comment_metrics":
-            // console.log(action.commentlength)
             return {
                 ...state,
                 commentlength: [...state.commentlength, action.commentlength],

@@ -26,8 +26,6 @@ const ListFeed = () => {
         .once("value")
         .then(snapshot => {
             snapshot.forEach(items => {
-                let child = items.val().metrics;
-                console.log(child)
                 Firebase().db.ref("feeds/" + items.key + "/metrics/likes")
                     .once("value")
                     .then(snapshot => {
@@ -58,7 +56,6 @@ const ListFeed = () => {
         .once("value")
         .then(snapshot => {
             snapshot.forEach(items => {
-                let child = items.val().comments;
                 Firebase().db.ref("feeds/" + items.key + "/comments")
                     .once("value")
                     .then(snapshot => {
@@ -124,6 +121,7 @@ const ListFeed = () => {
     }
 
     const feedArr = listfeed.uid.map((items, i) => 
+    
         <div key={i} className="bar">
             <div className="bar-top">
                 <div className="left" onClick={() => {
@@ -157,11 +155,39 @@ const ListFeed = () => {
                 <div className="dropdown fa fa-ellipsis-h">
                     <div className="panel">
                         {listfeed.userID[i] === profile.uid && <button onClick={(event) => {
+                            let id = items
                             Firebase().db.ref("feeds/"+ items)
-                            .remove()
-                            .then(() => {
-                                event.target.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+                            .once("value")
+                            .then(snapshot => {
+                                let child = snapshot.val().medias;
+                                child.forEach(items => {
+                                    Firebase().storage.ref(`images/${profile.uid}/feeds/${items}.jpg`)
+                                    .delete()
+                                    .then(() => {
+                                        Firebase().db.ref("feeds/"+ id)
+                                        .remove()
+                                        .then(() => {
+                                            event
+                                            .target
+                                            .parentElement.parentElement.parentElement.parentElement
+                                            .style
+                                            .display = "none";
+                                        })
+                                    }).catch(() => {
+                                        Firebase().db.ref("feeds/"+ id)
+                                        .remove()
+                                        .then(() => {
+                                            event
+                                            .target
+                                            .parentElement.parentElement.parentElement.parentElement
+                                            .style
+                                            .display = "none";
+                                        })
+                                    })
+                                })
+                                
                             })
+                            
                         }}><i className="far fa-trash-alt"></i> Delete</button>}
                     </div>
                 </div>
@@ -177,11 +203,13 @@ const ListFeed = () => {
                         if (event.target.className === "fa fa-heart liked"){
                             event.target.className = "far fa-heart";
                             event.target.innerHTML  = parseInt(event.target.innerHTML) - 1;
-                            Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid).remove();
+                            Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid)
+                            .remove();
                         } else {
                             event.target.className = "fa fa-heart liked";
                             event.target.innerHTML  = parseInt(event.target.innerHTML) + 1;
-                            Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid).set({
+                            Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid)
+                            .set({
                                 status: true
                             })
                         }    
@@ -189,13 +217,15 @@ const ListFeed = () => {
                     if (event.target.className === "far fa-heart"){
                         event.target.className = "fa fa-heart liked";
                         event.target.innerHTML  = parseInt(event.target.innerHTML) + 1;
-                        Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid).set({
+                        Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid)
+                        .set({
                             status: true
                         })
                     } else {
                         event.target.className = "far fa-heart";
                         event.target.innerHTML  = parseInt(event.target.innerHTML) - 1;
-                        Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid).remove();
+                        Firebase().db.ref("feeds/" + items + "/metrics/likes/" + profile.uid)
+                        .remove();
                     }
                     
                 }}>{getLikeLength(listfeed.likes, i)}</button>}
