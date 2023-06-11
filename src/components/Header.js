@@ -24,13 +24,13 @@ const Header = () => {
             Firebase().db.ref("users/"+ uid).once("value").then(snapshot => {
                 dispatch({
                     type: "get_profile",
-                    username: snapshot.val().username,
-                    uid: snapshot.key,
-                    isAdmin: snapshot.val().isAdmin,
-                    execPosi: snapshot.val().executivePosition,
-                    number: snapshot.val().phoneNumber,
-                    discription: snapshot.val().discription,
-                    email: snapshot.val().email
+                    username: snapshot.val()?.username,
+                    uid: snapshot?.key,
+                    isAdmin: snapshot.val()?.isAdmin,
+                    execPosi: snapshot.val()?.executivePosition,
+                    number: snapshot.val()?.phoneNumber,
+                    discription: snapshot.val()?.discription,
+                    email: snapshot.val()?.email
                 });
                 if (snapshot.val().profilePic !== ""){
                     dispatch({
